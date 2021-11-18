@@ -25,7 +25,8 @@
     $ pip install -r requirements.txt
     ```
 * Start the docker containers
-* Run the migrations
+* Apply the migrations
+* Create super user
 * Start the application
 
 ### Usage
