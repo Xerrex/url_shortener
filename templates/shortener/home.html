@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="text-secondary px-4 py-5 text-center">
+  <div class="py-5">
+    <h1 class="display-5 fw-bold text-white">Url Shortener</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="fs-5 mb-4">A service to shorten urls. You can reditect to a 
+        shortened url or view how many times 
+        a url has been visisted
+      </p>
+
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        <button type="button" class="btn btn-outline-primary btn-lg px-4 me-sm-3 fw-bold">Shorten Url</button>
+        <button type="button" class="btn btn-outline-light btn-lg px-4">Redirect to Url</button>
+        <button type="button" class="btn btn-outline-info btn-lg px-4">view url stats</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
