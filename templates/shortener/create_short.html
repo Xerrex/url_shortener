@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+{% block content %}
+  <div class="text-secondary px-4 py-5 text-center">
+    <div class="py-5">
+      <h1 class="display-5 fw-bold text-white">Shortener URl </h1>
+      <div class="col-lg-6 mx-auto">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row d-flex justify-content-center">
+            <div class="col">
+              {% for field in form %}
+                {% render_field field class="form-control"  placeholder="https://example.com"%}
+              {% endfor %}
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-outline-primary form-control">Shorten Url</button>
+            </div>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+{% endblock content %}

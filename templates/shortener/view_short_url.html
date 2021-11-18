@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+{% block content %}
+  <div class="text-secondary px-4 py-5 text-center">
+    <div class="py-5">
+      <h1 class="display-5 fw-bold text-white">View Short Url </h1>
+      <div class="col-lg-6 mx-auto">
+        <form method="post">
+          {% csrf_token %}
+          <div class="row d-flex justify-content-center">
+            <div class="col">
+              <input type="text" class="form-control" id="short_url" name="short_url" placeholder="sasfatbgass"/>
+            </div>
+            <div class="col">
+              <button type="submit" class="btn btn-outline-info form-control">View short url</button>
+            </div>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+{% endblock content %}

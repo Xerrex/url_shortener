@@ -12,9 +12,8 @@
       </p>
 
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-        <button type="button" class="btn btn-outline-primary btn-lg px-4 me-sm-3 fw-bold">Shorten Url</button>
-        <button type="button" class="btn btn-outline-light btn-lg px-4">Redirect to Url</button>
-        <button type="button" class="btn btn-outline-info btn-lg px-4">view url stats</button>
+        <a href="{% url 'create_short_url' %}" class="btn btn-outline-primary btn-lg px-4 me-sm-3 fw-bold">Shorten Url</a>
+        <a href="{% url 'view_short_url' %}" class="btn btn-outline-info btn-lg px-4">View Short Url</a>
       </div>
     </div>
   </div>
