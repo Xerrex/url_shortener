@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 
+from celery.schedules import crontab
+import shortener.tasks
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -136,3 +139,21 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Celery Task
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379")
+
+
+# https://docs.celeryproject.org/en/stable/userguide/periodic-tasks.html#guide-beat
+CELERY_BEAT_SCHEDULE = {
+    "test_task": {
+        "task": "shortener.tasks.test_task",
+        "schedule": crontab(minute="*/1"),
+    },
+    "delete_expired_url":{
+        "task": "shortener.tasks.delete_expired_shortened_urls",
+        "schedule": crontab(hour=0,minute="1", day_of_week=6), # run every saturday at 00:01
+    }
+}

@@ -12,6 +12,7 @@ services:
       - ./.env.dev
     depends_on:
       - db
+      - redis
   
   db:
     image: postgres:13.2-alpine
@@ -21,9 +22,32 @@ services:
       - ./.env.db
 
   adminer:
-        image: adminer:latest
-        restart: always
-        ports:
-            - 8080:8080
-        depends_on: 
-            - db
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on: 
+      - db
+  
+  redis:
+    image: redis:alpine3.11 
+  
+  celery: #worker
+    build: ./
+    command: celery -A project_core worker -l info
+    volumes:
+      - ./:/usr/src/app/
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - redis
+  
+  celery-beat: #Scheduler
+    build: ./
+    command: celery -A project_core beat -l info
+    volumes:
+      - ./:/usr/src/app/
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - redis

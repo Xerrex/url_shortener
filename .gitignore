@@ -10,3 +10,6 @@ yard/
 
 #DB
 *.sqlite*
+
+# celery
+celerybeat-schedule
