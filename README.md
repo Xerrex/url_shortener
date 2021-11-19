@@ -10,27 +10,21 @@
 
 ## Get Started
 ### Setup
+#### Docker
 * Clone the repository
 * Change into the cloned directory
-* Create a virtual environement
-    ```sh
-    $ python3 -m venv venv
-    ```
-* Activate Virtual environment
-    ```sh
-    $ source venv/bin/activate
-    ```
-* Install Dependancies
-    ```sh
-    $ pip install -r requirements.txt
-    ```
+* Create '.env.db' & '.env.dev' envrionment variables
 * Start the docker containers
-* Apply the migrations
 * Create super user
-* Start the application
+#### Local
+- comming soon
 
 ### Usage
-- Comming soon
+- Open [localhost:8000](http://localhost:8000/) to access the app.
+- To view the database open [localhost:8080](http://localhost:8080/)
+    * use the credentials defined in '.env.db'
 
 ## License
 Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+## Acknowledgement
