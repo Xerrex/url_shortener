@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 
 from .models import ShortUrl
-from .forms import ShortUrlForm
+from .forms import NewShortUrlForm
 from .utils import generate_short_url
 
 
@@ -18,29 +19,34 @@ def create_short_url(request):
     Url & return a shortened version
     """
     if request.method == "POST":
-        form = ShortUrlForm(request.POST)
+        form = NewShortUrlForm(request.POST)
         if form.is_valid():
             shorturl = form.save(commit=False)
             shorturl.short_url = generate_short_url(10)
             shorturl.save()
-            return redirect("open_short_url", shortURL=shorturl.short_url)
+            return redirect("view_short_url", shortURL=shorturl.short_url)
     else:   
-        form = ShortUrlForm
+        form = NewShortUrlForm
     return render(request, "shortener/create_short.html", {"form": form})
 
 
-def view_short_url(request):
+def open_short_url(request):
     """Open page to take user input 
     and redirect to short url page
     """
     if request.method == "POST":
         short_url = request.POST["short_url"]
-        if short_url and ShortUrl.objects.get(short_url=short_url): # TOD0: wrap in try catch
-            return redirect('open_short_url', shortURL=short_url)
-    return render(request, "shortener/view_short_url.html")
+        try:
+            ShortUrl.objects.get(short_url=short_url)
+            return redirect('view_short_url', shortURL=short_url)
+        except ShortUrl.DoesNotExist:
+            messages.error(request, f'This "{short_url}" short url does not exists')
+            return render(request, "shortener/open_short_url.html")
+        
+    return render(request, "shortener/open_short_url.html")
 
 
-def open_short_url(request, shortURL):
+def view_short_url(request, shortURL):
     
     shortUrl = ShortUrl.objects.get(short_url=shortURL)
     
