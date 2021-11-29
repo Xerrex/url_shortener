@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from .models import ShortUrl
-from .forms import ShortUrlForm
+from .forms import NewShortUrlForm
 from .utils import generate_short_url
 
 
@@ -18,14 +18,14 @@ def create_short_url(request):
     Url & return a shortened version
     """
     if request.method == "POST":
-        form = ShortUrlForm(request.POST)
+        form = NewShortUrlForm(request.POST)
         if form.is_valid():
             shorturl = form.save(commit=False)
             shorturl.short_url = generate_short_url(10)
             shorturl.save()
             return redirect("open_short_url", shortURL=shorturl.short_url)
     else:   
-        form = ShortUrlForm
+        form = NewShortUrlForm
     return render(request, "shortener/create_short.html", {"form": form})
 
 

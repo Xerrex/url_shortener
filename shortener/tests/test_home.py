@@ -22,6 +22,6 @@ class HomeTestCases(TestCase):
         view_short_url = reverse('view_short_url')
         self.assertContains(self.response, f'href="{view_short_url}"')
         
-    def test_home_page_resolves_to_home_view(self):
+    def test_home_page_resolves_to_home_view_func(self):
         view = resolve('/')
         self.assertEqual(view.func, home)
