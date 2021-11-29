@@ -18,9 +18,9 @@ class HomeTestCases(TestCase):
         create_short_url = reverse('create_short_url')
         self.assertContains(self.response, f'href="{create_short_url}"')
     
-    def test_home_page_contains_link_to_view_short_url(self):
-        view_short_url = reverse('view_short_url')
-        self.assertContains(self.response, f'href="{view_short_url}"')
+    def test_home_page_contains_link_to_open_short_url(self):
+        open_short_url = reverse('open_short_url')
+        self.assertContains(self.response, f'href="{open_short_url}"')
         
     def test_home_page_resolves_to_home_view_func(self):
         view = resolve('/')
