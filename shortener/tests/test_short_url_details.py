@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import resolve, reverse
 
 from shortener.models import ShortUrl
-from shortener.views import view_short_url
+from shortener.views import view_short_url, redirect_to_url
 
 
 class ViewshortUrlDetailsTestCases(TestCase):
@@ -15,7 +15,11 @@ class ViewshortUrlDetailsTestCases(TestCase):
         
         # create the view short url
         self.shorturl = ShortUrl.objects.all()[0]
-        self.url = reverse("view_short_url", kwargs={"shortURL":self.shorturl.short_url})
+        
+        kwargs={"shortURL":self.shorturl.short_url}
+        self.url = reverse("view_short_url", kwargs=kwargs)
+        self.redirect_url = reverse('redirect_short_url', kwargs=kwargs)
+        
         self.response = self.client.get(self.url)
     
     def test_page_status_code(self):
@@ -47,7 +51,28 @@ class ViewshortUrlDetailsTestCases(TestCase):
     def test_page_contains_redirect_link(self):
         """Test page contains link to redirect to original url
         """
-        redirect_url = reverse('redirect_short_url', kwargs={'shortURL':self.shorturl.short_url})
-        self.assertContains(self.response, f'href="{redirect_url}"')
+        self.assertContains(self.response, f'href="{self.redirect_url}"')
+
+    def test_updating_times_visited_in_short_url_objects(self):
+        """Test that redirecting to orginal url 
+        changes times visited
+        """
+        self.assertEquals(self.shorturl.times_visited, 0)
+        
+        self.client.get(self.redirect_url)
+        shorturl = ShortUrl.objects.all()[0]
+        self.assertEquals(shorturl.times_visited, 1)
     
-    
+    def test_redirecting_to_original_url_resolves_to_redirect_to_url_func(self):
+        """Test redirecting to original url resolves 
+        to redirect_to_url func
+        """
+        view = resolve(self.redirect_url)
+        self.assertEquals(view.func, redirect_to_url)
+
+    def test_redirecting_to_correct_url(self):
+        """Test that opening the redirect url opens
+        the original url of the short urls
+        """
+        response = self.client.get(self.redirect_url)
+        self.assertEquals(response.url, self.shorturl.original_url)
